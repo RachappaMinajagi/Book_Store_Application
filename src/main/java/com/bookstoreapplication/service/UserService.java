@@ -15,33 +15,18 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-/**
- * Created UserService class to serve api calls done by controller layer
- */
+
 public class UserService implements IUserService {
-    /**
-     * Autowired UserRegistrationRepository interface to inject its dependency here
-     */
+
     @Autowired
     private UserRegistrationRepository userRepository;
-    /**
-     * Autowired EmailSenderService interface to inject its dependency here
-     */
+
     @Autowired
     EmailSenderService mailService;
-    /**
-     * Autowired util interface to inject its dependency here
-     */
+
     @Autowired
     TokenUtility util;
 
-
-    /**
-     * create a method name as addUser
-     * Ability to save user details to repository
-     * @param userDTO - user data
-     * @return - save all data
-     */
     @Override
     public String addUser(UserDTO userDTO) {
         UserRegistration newUser= new UserRegistration(userDTO);
@@ -53,29 +38,20 @@ public class UserService implements IUserService {
         return token;
     }
 
-    /**
-     * create a method name as getAllUsers
-     * - Ability to get all user data by findAll() method
-     * @return - all data
-     */
+
     @Override
     public List<UserRegistration> getAllUsers() {
         List<UserRegistration> getUsers= userRepository.findAll();
         return getUsers;
     }
 
-    /**
-     * create a method name as getUserByToken
-     * - Ability to get user data by token
-     * @param token - token
-     * @return - user data by token
-     */
+
     @Override
     public Object getUserByToken(String token) {
         int id=util.decodeToken(token);
         Optional<UserRegistration> getUser=userRepository.findById(id);
         if(getUser.isPresent()){
-            mailService.sendEmail("nilofarmujawar1118@gmail.com", "Test Email", "Get your data with this token, hii: "
+            mailService.sendEmail("rachotism@gmail.com", "Test Email", "Get your data with this token, hii: "
                     +getUser.get().getEmail()+"Please Click here to get data-> "
                     +"http://localhost:8081/user/getBy/"+token);
             return getUser;
@@ -86,11 +62,7 @@ public class UserService implements IUserService {
         }
     }
 
-    /**
-     * create a method name as loginUser
-     * @param userLoginDTO - user login data (email, password)
-     * @return - user login
-     */
+
     @Override
     public ResponseDTO loginUser(UserLoginDTO userLoginDTO) {
         ResponseDTO dto = new ResponseDTO();
@@ -113,13 +85,6 @@ public class UserService implements IUserService {
     }
 
 
-    /**
-     * create a method name as forgotPassword
-     * @param email - user email
-     * @param password - user password
-     * @return - set new password
-     */
-
     @Override
     public String forgotPassword(String email, String password) {
         Optional<UserRegistration> isUserPresent = userRepository.findByEmailid(email);
@@ -136,25 +101,14 @@ public class UserService implements IUserService {
 
     }
 
-    /**
-     * create a method name as getUserByEmailId
-     * - Ability get user data by emailId
-     * @param emailId - user email id
-     * @return - user data
-     */
+
     @Override
     public Object getUserByEmailId(String emailId) {
 
         return userRepository.findByEmailid(emailId);
     }
 
-    /**
-     * create a method name as updateUser
-     * update  record data by emilId
-     * @param email_id - user email id
-     * @param userDTO - user data
-     * @return - update user data
-     */
+
     @Override
     public UserRegistration updateUser(String email_id, UserDTO userDTO) {
         Optional<UserRegistration> updateUser = userRepository.findByEmailid(email_id);
@@ -169,12 +123,7 @@ public class UserService implements IUserService {
         throw new BookStoreException("Book Details for email not found");
     }
 
-    /**
-     * create a method name as getToken
-     * ability get token by particular email id
-     * @param email - user email id
-     * @return - token
-     */
+
     @Override
     public String getToken(String email) {
         Optional<UserRegistration> userRegistration=userRepository.findByEmailid(email);
@@ -183,19 +132,13 @@ public class UserService implements IUserService {
         return token;
     }
 
-    /**
-     * create a method name as getAllUserDataByToken
-     * get all data by using token
-     * @param token - i/p token in the form of string
-     * @return - all user data
-     */
     @Override
     public List<UserRegistration> getAllUserDataByToken(String token) {
         int id=util.decodeToken(token);
         Optional<UserRegistration> isContactPresent=userRepository.findById(id);
         if(isContactPresent.isPresent()) {
             List<UserRegistration> listOfUsers=userRepository.findAll();
-            mailService.sendEmail("nilofarmujawar1118@gmail.com", "Test Email", "Get your data with this token, hii: "
+            mailService.sendEmail("rachotism@gmail.com", "Test Email", "Get your data with this token, hii: "
                     +isContactPresent.get().getEmail()+"Please Click here to get data-> "
                     +"http://localhost:8081/user/getAll/"+token);
             return listOfUsers;
@@ -204,12 +147,7 @@ public class UserService implements IUserService {
             return null;	}
     }
 
-    /**
-     * create a method name as updateRecordById
-     * @param id - user id
-     * @param userDTO - user data
-     * @return - update user data
-     */
+
     @Override
     public UserRegistration updateRecordById(Integer id, UserDTO userDTO) {
 //        Integer id= util.decodeToken(token);

@@ -31,18 +31,10 @@ public class OrderService implements IOrderService {
      */
     @Autowired
     private BookStoreRepository bookRepo;
-    /**
-     * Autowired UserRegistrationRepository interface to inject its dependency here
-     */
+
     @Autowired
     private UserRegistrationRepository userRepo;
 
-    /**
-     * create a method name as insertOrder
-     * Ability to save order details to repository
-     * @param orderdto - order data
-     * @return - save all data
-     */
     public Order insertOrder(OrderDTO orderdto) {
         Optional<Book> book = bookRepo.findById(orderdto.getBookId());
         Optional<UserRegistration> user = userRepo.findById(orderdto.getUserId());
@@ -63,23 +55,14 @@ public class OrderService implements IOrderService {
         }
     }
 
-    /**
-     * create a method name as getAllOrderRecords
-     * - Ability to get all order data by findAll() method
-     * @return - all data
-     */
+
     public List<Order> getAllOrderRecords() {
         List<Order> orderList = orderRepo.findAll();
         log.info("ALL order records retrieved successfully");
         return orderList;
     }
 
-    /**
-     * create a method name as getOrderRecord
-     * - Ability to get order data by Id
-     * @param id - order id
-     * @return - order data by id
-     */
+
     public Order getOrderRecord(Integer id) {
         Optional<Order> order = orderRepo.findById(id);
         if (order.isPresent()) {
@@ -91,13 +74,7 @@ public class OrderService implements IOrderService {
         }
     }
 
-    /**
-     * create a method name as updateOrderRecord
-     * Ability to update order data for particular id
-     * @param id - order id
-     * @param dto - order data
-     * @return - updated Order information in JSON format
-     */
+
     public Order updateOrderRecord(Integer id, OrderDTO dto) {
         Optional<Order> order = orderRepo.findById(id);
         Optional<Book> book = bookRepo.findById(dto.getBookId());
@@ -125,12 +102,7 @@ public class OrderService implements IOrderService {
         }
     }
 
-    /**
-     * create a method name as deleteOrderRecord
-     * ability to delete data by particular  id
-     * @param id -order id
-     * @return - orderId and Acknowledgment message
-     */
+
     public Order deleteOrderRecord(Integer id) {
         Optional<Order> order = orderRepo.findById(id);
         if (order.isPresent()) {
