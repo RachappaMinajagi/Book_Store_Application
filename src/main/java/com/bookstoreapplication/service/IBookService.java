@@ -17,6 +17,12 @@ public interface IBookService {
 
     List<Book> getAllBookData();
 
+    List<Book> sortedListOfBooksInAscendingOrder();
+
+    List<Book> sortedListOfBooksInDescendingOrder();
+
+    List<Book> getBookByName(String bookName);
+
     Book updateRecordById(Integer BookId, BookDTO bookDTO);
 
     Object deleteRecordById(int BookId);

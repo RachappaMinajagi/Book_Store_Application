@@ -56,4 +56,27 @@ public class BookController {
         return new ResponseEntity(dto,HttpStatus.ACCEPTED);
     }
 
+    @GetMapping("searchByBookName/{name}")
+    public ResponseEntity<ResponseDTO> getBookByName(@PathVariable("name") String name)
+    {
+        List<Book> listOfBooks = bookService.getBookByName(name);
+        ResponseDTO dto = new ResponseDTO("Data retrieved successfully (:",listOfBooks);
+        return new ResponseEntity(dto,HttpStatus.OK);
+    }
+
+    @GetMapping("/sortAsc")
+    public ResponseEntity<ResponseDTO> getBooksInAscendingOrder()
+    {
+        List<Book> listOfBooks = bookService.sortedListOfBooksInAscendingOrder();
+        ResponseDTO dto = new ResponseDTO("Data retrieved successfully (:",listOfBooks);
+        return new ResponseEntity(dto,HttpStatus.OK);
+    }
+    @GetMapping("/sortDesc")
+    public ResponseEntity<ResponseDTO> getBooksInDescendingOrder()
+    {
+        List<Book> listOfBooks =bookService.sortedListOfBooksInDescendingOrder();
+        ResponseDTO dto = new ResponseDTO("Data retrieved successfully (:",listOfBooks);
+        return new ResponseEntity(dto,HttpStatus.OK);
+    }
+
 }

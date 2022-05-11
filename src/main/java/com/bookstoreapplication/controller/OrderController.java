@@ -4,6 +4,8 @@ import com.bookstoreapplication.dto.OrderDTO;
 import com.bookstoreapplication.dto.ResponseDTO;
 import com.bookstoreapplication.model.Order;
 import com.bookstoreapplication.service.IOrderService;
+
+import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +28,7 @@ public class OrderController {
     @PostMapping("/insert")
     public ResponseEntity<ResponseDTO> insertOrder(@Valid @RequestBody OrderDTO orderdto){
         Order newOrder = orderService.insertOrder(orderdto);
-        ResponseDTO dto = new ResponseDTO("User registered successfully !",newOrder);
+        ResponseDTO dto = new ResponseDTO("order placed successfully !",newOrder);
         return new ResponseEntity(dto, HttpStatus.CREATED);
     }
 
@@ -47,6 +49,7 @@ public class OrderController {
     }
 
 
+
     @PutMapping("/updateOrder/{id}")
     public ResponseEntity<ResponseDTO> updateBookRecord(@PathVariable Integer id,@Valid @RequestBody OrderDTO orderdto){
         Order newOrder = orderService.updateOrderRecord(id,orderdto);
@@ -60,5 +63,12 @@ public class OrderController {
         Order newOrder = orderService.deleteOrderRecord(id);
         ResponseDTO dto = new ResponseDTO("Record deleted successfully !",newOrder);
         return new ResponseEntity(dto,HttpStatus.ACCEPTED);
+    }
+
+    @GetMapping("/cancelOrder/{id}")
+    public ResponseEntity<ResponseDTO> cancelOrderRecord(@PathVariable Integer id) {
+        Order newOrder = orderService.CancelOrderRecord(id);
+        ResponseDTO dto = new ResponseDTO("Order Cancelled successfully !", newOrder);
+        return new ResponseEntity(dto, HttpStatus.ACCEPTED);
     }
 }

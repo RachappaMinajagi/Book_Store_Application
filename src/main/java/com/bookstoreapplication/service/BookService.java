@@ -71,6 +71,18 @@ public class BookService implements IBookService{
         }
     }
 
+    @Override
+    public List<Book> sortedListOfBooksInAscendingOrder() {
+        List<Book> getSortedList=  bookStoreRepository.getSortedListOfBooksInAsc();
+        return getSortedList;
+    }
+
+    @Override
+    public List<Book> sortedListOfBooksInDescendingOrder() {
+        List<Book> getSortedListInDesc=  bookStoreRepository.getSortedListOfBooksInDesc();
+        return getSortedListInDesc;
+    }
+
 
     @Override
     public String deleteRecordById(int BookId) {
@@ -82,6 +94,15 @@ public class BookService implements IBookService{
             throw new BookStoreException("Book record does not found");
         }
         return "data deleted successful";
+    }
+
+    @Override
+    public List<Book> getBookByName(String bookName) {
+        List<Book> findBook= bookStoreRepository.findByBookName(bookName);
+        if(findBook.isEmpty()){
+            throw new BookStoreException(" Details for provided Book is not found");
+        }
+        return findBook;
     }
 
 }

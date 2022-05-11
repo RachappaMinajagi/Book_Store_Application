@@ -17,9 +17,6 @@ import java.util.Optional;
 
 @Service
 @Slf4j
-/**
- * Created OrderService class to serve api calls done by controller layer
- */
 public class OrderService implements IOrderService {
     /**
      * Autowired OrderRepository interface to inject its dependency here
@@ -39,8 +36,8 @@ public class OrderService implements IOrderService {
         Optional<Book> book = bookRepo.findById(orderdto.getBookId());
         Optional<UserRegistration> user = userRepo.findById(orderdto.getUserId());
         if (book.isPresent() && user.isPresent()) {
-            if (orderdto.getQuantity()<= book.get().getQuantity()) {
-                int quantity = book.get().getQuantity()-orderdto.getQuantity();
+            if (orderdto.getQuantity() <= book.get().getQuantity()) {
+                int quantity = book.get().getQuantity() - orderdto.getQuantity();
                 book.get().setQuantity(quantity);
                 bookRepo.save(book.get());
                 Order newOrder = new Order(book.get().getPrice(), orderdto.getQuantity(), orderdto.getAddress(), book.get(), user.get(), orderdto.isCancel());
@@ -82,7 +79,7 @@ public class OrderService implements IOrderService {
         if (order.isPresent()) {
             if (book.isPresent() && user.isPresent()) {
                 if (dto.getQuantity() <= book.get().getQuantity()) {
-                    int quantity = book.get().getQuantity()-dto.getQuantity();
+                    int quantity = book.get().getQuantity() - dto.getQuantity();
                     book.get().setQuantity(quantity);
                     bookRepo.save(book.get());
                     Order newOrder = new Order(id, book.get().getPrice(), dto.getQuantity(), dto.getAddress(), book.get(), user.get(), dto.isCancel());
@@ -112,6 +109,21 @@ public class OrderService implements IOrderService {
 
         } else {
             throw new BookStoreException("Order Record doesn't exists");
+        }
+    }
+
+    public Order CancelOrderRecord(Integer id) {
+        Optional<Order> order = orderRepo.findById(id);
+        if (order.isEmpty()) {
+            throw new BookStoreException("Order Record doesn't exists");
+        } else {
+            order.get().setCancel(true);
+            Book book = order.get().getBook();
+            book.setQuantity(book.getQuantity() + order.get().getQuantity());
+            bookRepo.save(book);
+            orderRepo.deleteById(id);
+            log.info("Order record deleted successfully for id " + id);
+            return order.get();
         }
     }
 }
